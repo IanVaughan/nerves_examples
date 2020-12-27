@@ -5,6 +5,9 @@
 # is restricted to this project.
 import Config
 
+# Enable the Nerves integration with Mix
+Application.start(:nerves_bootstrap)
+
 config :hello_zig, target: Mix.target()
 
 # Customize non-Elixir parts of the firmware. See
@@ -23,6 +26,8 @@ config :nerves, source_date_epoch: "1591241067"
 
 config :logger, backends: [RingLogger]
 
-if Mix.target() != :host do
+if Mix.target() == :host or Mix.target() == :"" do
+  import_config "host.exs"
+else
   import_config "target.exs"
 end
